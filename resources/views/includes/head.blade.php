@@ -1,5 +1,5 @@
 <head>
-    <title>POP - News Magazine & Blog Responsive HTML5 Template</title>
+    <title>POP - News Magazine</title>
     <meta charset="UTF-8">
     <html lang="fr">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
