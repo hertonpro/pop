@@ -50,8 +50,14 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($articles as $article)
+                                @php
+                                    $articlesFiltres = $articles->filter(function ($article) {
+                                        return $article->auteur->id == Auth::user()->id;
+                                    });
+                                @endphp
+                                @foreach ($articlesFiltres as $article)
                                     <tr>
+
                                         <td>
                                             <address><i class="zmdi zmdi-pin"></i>{{ $article->titre }}</address>
                                         </td>
@@ -81,6 +87,11 @@
                                         </td>
                                     </tr>
                                 @endforeach
+                                @if ($articlesFiltres->isEmpty())
+                                    <div class="alert alert-danger" role="alert">
+                                        Désolé, vous n'avez aucun article à votre actif !!!
+                                    </div>
+                                @endif
 
                             </tbody>
                         </table>
@@ -89,12 +100,14 @@
             </div>
             {{-- editer une articles --}}
             <div class="card">
+                <div class="header">
+                    <h2>Créer un nouvel article </h2>
+                </div>
                 <div class="body">
-
                     <form
-                         @if ($selected_article) action="{{ route('article.update', ['id' => $selected_article->id]) }}"
+                        @if ($selected_article) action="{{ route('article.update', ['id' => $selected_article->id]) }}"
                         @else
-                         action="{{ route('articles.store') }}" @endif 
+                         action="{{ route('articles.store') }}" @endif
                         enctype="multipart/form-data" method="POST">
                         @csrf
                         <div class="form-group">
@@ -130,8 +143,8 @@
                             <label for="resume">Résumé:</label>
                             <textarea name="resume" id="resume" placeholder="Écrivez la synthèse de votre article" class="form-control"
                                 placeholder="Entre le résumé de votre article" required> @isset($selected_article)
-{{ $selected_article->resume }}
-@endisset 
+                                {{ $selected_article->resume }}
+                                @endisset 
                                 </textarea>
                         </div>
 
@@ -139,8 +152,8 @@
                             <label for="contenu">Contenu:</label>
                             <textarea name="contenu" id="ArticleEditor" placeholder="Écrivez un nouvel article" class="form-control" required>
                                 @isset($selected_article)
-{{ $selected_article->contenu }}
-@endisset
+                                {{ $selected_article->contenu }}
+                                @endisset
                             </textarea>
                         </div>
 
